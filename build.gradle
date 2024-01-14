@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.0.0' // Add the Maven Shadow plugin
+}
+
+group = 'org.mangorage'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    implementation 'fr.bmartel:jspeedtest:1.+'
+    shadow 'fr.bmartel:jspeedtest:1.+'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    setArchiveClassifier("")
+}
+
+java {
+    toolchain {
+        targetCompatibility = JavaLanguageVersion.of(8)
+        sourceCompatibility = JavaLanguageVersion.of(8)
+    }
+}
+
+jar {
+    finalizedBy(shadowJar)
+    manifest {
+        attributes(
+                'Main-Class': 'org.mangorage.devtest.Main' // Replace 'your.package.name.Main' with the actual package and class name of your main class
+        )
+    }
+}
